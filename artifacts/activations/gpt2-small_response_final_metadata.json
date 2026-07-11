@@ -1,0 +1,16 @@
+{
+  "model_name": "gpt2-small",
+  "safe_name": "gpt2-small",
+  "input_format": "paired_rows",
+  "probe_position": "response_final",
+  "token_position_used": "final",
+  "target_columns": [
+    "label"
+  ],
+  "n_layers": 12,
+  "d_model": 768,
+  "max_length": 128,
+  "backend": "transformer_lens",
+  "family": "gpt2",
+  "prompt_only_mode": false
+}

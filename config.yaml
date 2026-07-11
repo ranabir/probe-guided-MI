@@ -1,0 +1,47 @@
+model:
+  model_name: EleutherAI/pythia-410m
+  backend: auto          # auto | transformer_lens | huggingface
+  device: auto           # auto | cpu | cuda | mps
+  dtype: auto            # auto | float32 | float16 | bfloat16
+  max_length: 256        # Anthropic sycophancy prompts run ~100-236 tokens; 128 truncated them
+  batch_size: 4
+
+data:
+  sample_size: 300
+  synthetic_only: false
+  train_frac: 0.70
+  val_frac: 0.15
+  test_frac: 0.15
+  random_seed: 42
+
+activations:
+  token_position: final  # final | mean | first  (position within the input text)
+  probe_position: prompt_final  # prompt_final | response_final
+  cache_residual: true
+  cache_attention: true
+  cache_mlp: true
+  cache_heads: false
+
+probe:
+  type: logistic_regression
+  standardize: true
+  max_iter: 1000
+  random_seed: 42
+  probe_layer_policy: best_late   # best_any | best_late | final_layer
+  min_probe_layer_frac: 0.65      # for best_late: layers >= frac * n_layers
+
+attribution:
+  method: grad_times_activation  # grad_norm | grad_times_activation | pair_diff_grad
+  top_k: 20
+  max_examples: 50
+  baseline_method: logit_gradient  # logit_gradient | random
+
+validation:
+  intervention_type: mean_ablation  # mean_ablation | zero_ablation
+  top_k: 5
+  random_trials: 5
+  max_examples: 50
+
+logging:
+  level: INFO
+  log_to_file: false

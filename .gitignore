@@ -1,0 +1,60 @@
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.ipynb_checkpoints/
+*.ipynb
+
+# ---------------------------------------------------------------------------
+# Environments
+# ---------------------------------------------------------------------------
+.env
+.venv
+venv/
+env/
+
+# ---------------------------------------------------------------------------
+# Large / regenerable artifacts (reproduce via scripts/02, scripts/03)
+# ---------------------------------------------------------------------------
+artifacts/activations/*.pt
+artifacts/activations/*.npz
+artifacts/probes/*.pkl
+# Keep small, human-readable artifacts (attribution CSVs, metadata JSON, top-layer txt)
+!artifacts/attribution/
+!artifacts/activations/*.json
+
+# ---------------------------------------------------------------------------
+# Processed data (Anthropic-derived; regenerable via scripts/01, scripts/01b)
+# ---------------------------------------------------------------------------
+data/raw/
+data/processed/*.csv
+# Keep the authored side-effect eval prompts (part of the code)
+!data/side_effect_eval/basic_prompts.jsonl
+
+# ---------------------------------------------------------------------------
+# Logs (run logs live in docs/)
+# ---------------------------------------------------------------------------
+logs/
+*.log
+
+# ---------------------------------------------------------------------------
+# OS / IDE / tooling
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+.claude/
+
+# ---------------------------------------------------------------------------
+# HuggingFace cache
+# ---------------------------------------------------------------------------
+.cache/
+huggingface/

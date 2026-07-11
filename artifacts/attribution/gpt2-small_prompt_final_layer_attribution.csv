@@ -1,0 +1,13 @@
+model_name,component,layer,head,attribution_score
+gpt2-small,hidden_states,6,,0.0021988830994814634
+gpt2-small,hidden_states,5,,0.0020261274185031652
+gpt2-small,hidden_states,4,,0.0019120242213830352
+gpt2-small,hidden_states,3,,0.0016224943101406097
+gpt2-small,hidden_states,2,,0.001505083404481411
+gpt2-small,hidden_states,1,,0.0011427399003878236
+gpt2-small,hidden_states,0,,0.0005420067464001477
+gpt2-small,hidden_states,7,,0.0
+gpt2-small,hidden_states,11,,0.0
+gpt2-small,hidden_states,8,,0.0
+gpt2-small,hidden_states,9,,0.0
+gpt2-small,hidden_states,10,,0.0

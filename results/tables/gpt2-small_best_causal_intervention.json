@@ -1,0 +1,11 @@
+{
+  "model_name": "gpt2-small",
+  "layer_selection": "causal_topk",
+  "layers": "[1, 2, 3]",
+  "intervention": "probe_steering",
+  "setting": "alpha=+1",
+  "targeted_flip_rate": 0.08333333333333333,
+  "behavior_margin_delta": 0.00873453889230285,
+  "cap_quantile": 0.75,
+  "cap_strength": 1.0
+}

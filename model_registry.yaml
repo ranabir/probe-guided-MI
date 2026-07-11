@@ -1,0 +1,176 @@
+models:
+  gpt2-small:
+    backend: transformer_lens
+    family: gpt2
+    hf_name: gpt2
+    display_name: GPT-2 Small
+    default_dtype: float32
+    trust_remote_code: false
+    chat_template: false
+    n_layers: 12
+    d_model: 768
+
+  gpt2:
+    backend: transformer_lens
+    family: gpt2
+    hf_name: gpt2
+    display_name: GPT-2 Small
+    default_dtype: float32
+    trust_remote_code: false
+    chat_template: false
+    n_layers: 12
+    d_model: 768
+
+  EleutherAI/pythia-70m:
+    backend: transformer_lens
+    family: pythia
+    hf_name: EleutherAI/pythia-70m
+    display_name: Pythia 70M
+    default_dtype: float32
+    trust_remote_code: false
+    chat_template: false
+
+  EleutherAI/pythia-160m:
+    backend: transformer_lens
+    family: pythia
+    hf_name: EleutherAI/pythia-160m
+    display_name: Pythia 160M
+    default_dtype: float32
+    trust_remote_code: false
+    chat_template: false
+
+  EleutherAI/pythia-410m:
+    backend: transformer_lens
+    family: pythia
+    hf_name: EleutherAI/pythia-410m
+    display_name: Pythia 410M
+    default_dtype: float32
+    trust_remote_code: false
+    chat_template: false
+
+  EleutherAI/pythia-1b:
+    backend: transformer_lens
+    family: pythia
+    hf_name: EleutherAI/pythia-1b
+    display_name: Pythia 1B
+    default_dtype: float16
+    trust_remote_code: false
+    chat_template: false
+
+  EleutherAI/pythia-2.8b:
+    backend: transformer_lens
+    family: pythia
+    hf_name: EleutherAI/pythia-2.8b
+    display_name: Pythia 2.8B
+    default_dtype: float16
+    trust_remote_code: false
+    chat_template: false
+
+  Qwen/Qwen2.5-0.5B-Instruct:
+    backend: huggingface
+    family: qwen
+    hf_name: Qwen/Qwen2.5-0.5B-Instruct
+    display_name: Qwen2.5 0.5B Instruct
+    training_stage: instruct
+    default_dtype: float16
+    trust_remote_code: true
+    chat_template: true
+    layer_attr: model.layers
+    hidden_attr: hidden_states
+
+  Qwen/Qwen2.5-1.5B-Instruct:
+    backend: huggingface
+    family: qwen
+    hf_name: Qwen/Qwen2.5-1.5B-Instruct
+    display_name: Qwen2.5 1.5B Instruct
+    training_stage: instruct
+    default_dtype: float16
+    trust_remote_code: true
+    chat_template: true
+    layer_attr: model.layers
+    hidden_attr: hidden_states
+
+  Qwen/Qwen2.5-0.5B:
+    backend: huggingface
+    family: qwen
+    hf_name: Qwen/Qwen2.5-0.5B
+    display_name: Qwen2.5 0.5B Base
+    training_stage: base
+    default_dtype: float16
+    trust_remote_code: true
+    chat_template: false
+    layer_attr: model.layers
+    hidden_attr: hidden_states
+
+  google/gemma-2-2b-it:
+    backend: huggingface
+    family: gemma
+    hf_name: google/gemma-2-2b-it
+    display_name: Gemma 2 2B IT
+    training_stage: instruct
+    default_dtype: float16
+    trust_remote_code: false
+    chat_template: true
+    layer_attr: model.layers
+    hidden_attr: hidden_states
+
+  google/gemma-2-2b:
+    backend: huggingface
+    family: gemma
+    hf_name: google/gemma-2-2b
+    display_name: Gemma 2 2B
+    default_dtype: float16
+    trust_remote_code: false
+    chat_template: false
+    layer_attr: model.layers
+    hidden_attr: hidden_states
+
+  # ---------------------------------------------------------------------------
+  # OLMo staged checkpoints (reviewer feedback #3) — PLACEHOLDERS.
+  # TODO: verify exact HuggingFace IDs before running. The OLMo project publishes
+  # base / SFT / DPO / Instruct stages; fill hf_name with the confirmed repo IDs.
+  # Example pattern (IDs illustrative — DO NOT trust without verifying):
+  #   allenai/OLMo-2-1124-7B            (base / pretrained)
+  #   allenai/OLMo-2-1124-7B-SFT        (supervised fine-tuned)
+  #   allenai/OLMo-2-1124-7B-DPO        (DPO)
+  #   allenai/OLMo-2-1124-7B-Instruct   (instruct / final)
+  # ---------------------------------------------------------------------------
+  olmo-base-PLACEHOLDER:
+    backend: huggingface
+    family: olmo
+    hf_name: TODO_OLMO_BASE_ID
+    display_name: OLMo Base (placeholder)
+    default_dtype: float16
+    trust_remote_code: true
+    chat_template: false
+    training_stage: base
+
+  olmo-sft-PLACEHOLDER:
+    backend: huggingface
+    family: olmo
+    hf_name: TODO_OLMO_SFT_ID
+    display_name: OLMo SFT (placeholder)
+    default_dtype: float16
+    trust_remote_code: true
+    chat_template: true
+    training_stage: sft
+
+  olmo-dpo-PLACEHOLDER:
+    backend: huggingface
+    family: olmo
+    hf_name: TODO_OLMO_DPO_ID
+    display_name: OLMo DPO (placeholder)
+    default_dtype: float16
+    trust_remote_code: true
+    chat_template: true
+    training_stage: dpo
+
+  olmo-instruct-PLACEHOLDER:
+    backend: huggingface
+    family: olmo
+    hf_name: TODO_OLMO_INSTRUCT_ID
+    display_name: OLMo Instruct (placeholder)
+    default_dtype: float16
+    trust_remote_code: true
+    chat_template: true
+    training_stage: instruct

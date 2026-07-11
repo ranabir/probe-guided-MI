@@ -1,0 +1,12 @@
+{
+  "metric_col": "val_auroc",
+  "best_any_layer": 3,
+  "best_any_metric": 1.0,
+  "selected_policy": "best_late",
+  "selected_layer": 7,
+  "selected_metric": 1.0,
+  "min_probe_layer_frac": 0.65,
+  "reason": "best val_auroc among layers >= 7 (best_late)",
+  "probe_type": "classification",
+  "probe_target": "label"
+}

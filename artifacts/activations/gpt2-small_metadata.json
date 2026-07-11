@@ -1,0 +1,10 @@
+{
+  "model_name": "gpt2-small",
+  "safe_name": "gpt2-small",
+  "n_layers": 12,
+  "d_model": 768,
+  "max_length": 128,
+  "token_position": "final",
+  "backend": "transformer_lens",
+  "family": "gpt2"
+}

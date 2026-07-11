@@ -1,0 +1,17 @@
+{
+  "model_name": "EleutherAI/pythia-410m",
+  "safe_name": "EleutherAI_pythia-410m",
+  "input_format": "prompt_preferences",
+  "probe_position": "prompt_final",
+  "token_position_used": "final",
+  "target_columns": [
+    "prefers_sycophancy",
+    "behavior_margin"
+  ],
+  "n_layers": 24,
+  "d_model": 1024,
+  "max_length": 256,
+  "backend": "transformer_lens",
+  "family": "pythia",
+  "prompt_only_mode": true
+}

@@ -1,0 +1,17 @@
+{
+  "model_name": "Qwen/Qwen2.5-0.5B-Instruct",
+  "safe_name": "Qwen_Qwen2.5-0.5B-Instruct",
+  "input_format": "prompt_preferences",
+  "probe_position": "prompt_final",
+  "token_position_used": "final",
+  "target_columns": [
+    "prefers_sycophancy",
+    "behavior_margin"
+  ],
+  "n_layers": 24,
+  "d_model": 896,
+  "max_length": 256,
+  "backend": "huggingface",
+  "family": "qwen",
+  "prompt_only_mode": true
+}

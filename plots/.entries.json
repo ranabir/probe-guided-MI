@@ -1,0 +1,322 @@
+{
+  "gpt2-small": [
+    {
+      "file": "plots/gpt2-small/gpt2-small_probe_regression_by_layer.png",
+      "model": "gpt2-small",
+      "experiment": "prompt-preference regression",
+      "shows": "per-layer test/val Pearson of probe predicting behavior_margin",
+      "read": "higher = preference more linearly decodable at that layer; rising trend = upper layers commit",
+      "source": "results/tables/gpt2-small_prompt_preferences_prompt_final_layer_probe_metrics.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_behavior_margin_distribution.png",
+      "model": "gpt2-small",
+      "experiment": "prompt-preference dataset",
+      "shows": "histogram of per-prompt behavior_margin",
+      "read": "mass right of 0 = model leans sycophantic; heavy left = resists. Annotated % prefer syc",
+      "source": "data/processed/gpt2-small_prompt_preferences.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_probe_gradient_layer_attribution.png",
+      "model": "gpt2-small",
+      "experiment": "probe-gradient attribution",
+      "shows": "attribution score per layer, top-k highlighted",
+      "read": "taller bar = layer contributes more to the probe's predicted preference",
+      "source": "artifacts/attribution/gpt2-small_prompt_preferences_prompt_final_layer_attribution.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_causal_probe_delta.png",
+      "model": "gpt2-small",
+      "experiment": "causal validation (probe prediction)",
+      "shows": "probe_delta by intervention method",
+      "read": "more negative for probe_gradient than random = attributed layers matter to the probe",
+      "source": "results/tables/gpt2-small_prompt_preferences_prompt_final_causal_validation.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_causal_behavior_margin_delta.png",
+      "model": "gpt2-small",
+      "experiment": "causal validation (real behavior)",
+      "shows": "behavior_margin_delta by intervention method",
+      "read": "probe_gradient separating from random = attributed layers causally shift behavior",
+      "source": "results/tables/gpt2-small_prompt_preferences_prompt_final_causal_validation.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_topk_sweep_behavior_margin.png",
+      "model": "gpt2-small",
+      "experiment": "top-k sweep",
+      "shows": "effect size vs number of layers intervened",
+      "read": "probe-gradient curve below random = targeted layers do more per-k",
+      "source": "results/tables/gpt2-small_prompt_preferences_prompt_final_causal_sweep.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_probe_vs_controls_by_layer.png",
+      "model": "gpt2-small",
+      "experiment": "confound controls",
+      "shows": "sycophancy probe decodability vs random-label / static-feature / topic controls",
+      "read": "random-label ~0 = signal is real; a surface feature matching the probe = confound risk",
+      "source": "results/tables/gpt2-small_control_probe_metrics.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_direction_comparison_behavior_delta.png",
+      "model": "gpt2-small",
+      "experiment": "direction steering",
+      "shows": "behavior_margin change vs steering strength, per direction method",
+      "read": "steeper line = that direction controls behavior more; compare diff_of_means to regression",
+      "source": "results/tables/gpt2-small_direction_comparison.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_direction_comparison_answer_flip.png",
+      "model": "gpt2-small",
+      "experiment": "direction steering",
+      "shows": "answer-flip rate vs steering strength, per direction",
+      "read": "higher flip rate at moderate \u03b1 = more effective, interpretable control",
+      "source": "results/tables/gpt2-small_direction_comparison.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_decodability_vs_causal_effect.png",
+      "model": "gpt2-small",
+      "experiment": "decodability vs causation",
+      "shows": "per-layer decodability and causal effect on two axes",
+      "read": "curves tracking = decoding predicts causation; diverging = they're different layers",
+      "source": "results/tables/gpt2-small_layerwise_decodability_causal_sweep.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_layerwise_behavior_delta.png",
+      "model": "gpt2-small",
+      "experiment": "layerwise causal effect",
+      "shows": "behavior_margin change when each layer is patched, with 95% CI",
+      "read": "bars/points with CI clear of 0 = a genuinely causal layer",
+      "source": "results/tables/gpt2-small_layerwise_decodability_causal_sweep.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_layerwise_answer_flip_rate.png",
+      "model": "gpt2-small",
+      "experiment": "layerwise answer-flip",
+      "shows": "share of prompts that changed preferred answer when each layer is patched",
+      "read": "taller bar = patching that layer more often flips the model's A/B choice",
+      "source": "results/tables/gpt2-small_layerwise_decodability_causal_sweep.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_contrastive_causal_answer_flip.png",
+      "model": "gpt2-small",
+      "experiment": "causal control",
+      "shows": "targeted syc\u2192honest answer-flip by layer selection and intervention",
+      "read": "taller = more answers flipped to honest; does causal_topk (orange) beat decodable/random?",
+      "source": "results/tables/gpt2-small_contrastive_causal_results.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_contrastive_causal_behavior_delta.png",
+      "model": "gpt2-small",
+      "experiment": "causal control",
+      "shows": "behavior_margin change per condition with 95% CI",
+      "read": "negative bars clear of 0 = real de-sycophantizing effect",
+      "source": "results/tables/gpt2-small_contrastive_causal_results.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_causal_vs_decodable_layer_intervention.png",
+      "model": "gpt2-small",
+      "experiment": "causal control",
+      "shows": "decodability and causal effect by layer, with selected intervention layers shaded",
+      "read": "if orange (causal) and blue (decodable) bands sit at different layers, the two diverge",
+      "source": "results/tables/gpt2-small_layerwise_decodability_causal_sweep.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_side_effect_summary.png",
+      "model": "gpt2-small",
+      "experiment": "side effects",
+      "shows": "weirdness / repetition / QA-drop and overall side-effect score after intervention",
+      "read": "low bars = intervention preserves general capability; high = model disrupted",
+      "source": "results/tables/gpt2-small_side_effect_eval.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_intervention_search_pareto.png",
+      "model": "gpt2-small",
+      "experiment": "intervention search",
+      "shows": "control vs side-effect trade-off across intervention configs",
+      "read": "top-left points dominate: high flip, low harm; flat/low cloud = no good lever",
+      "source": "results/tables/gpt2-small_causal_intervention_search.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_best_interventions_ranked.png",
+      "model": "gpt2-small",
+      "experiment": "intervention search",
+      "shows": "top 10 intervention configs by objective score",
+      "read": "longer bar = better control-vs-harm trade-off; orange=causal layers",
+      "source": "results/tables/gpt2-small_causal_intervention_search.csv"
+    }
+  ],
+  "EleutherAI_pythia-410m": [
+    {
+      "file": "plots/EleutherAI_pythia-410m/EleutherAI_pythia-410m_probe_regression_by_layer.png",
+      "model": "EleutherAI/pythia-410m",
+      "experiment": "prompt-preference regression",
+      "shows": "per-layer test/val Pearson of probe predicting behavior_margin",
+      "read": "higher = preference more linearly decodable at that layer; rising trend = upper layers commit",
+      "source": "results/tables/EleutherAI_pythia-410m_prompt_preferences_prompt_final_layer_probe_metrics.csv"
+    },
+    {
+      "file": "plots/EleutherAI_pythia-410m/EleutherAI_pythia-410m_behavior_margin_distribution.png",
+      "model": "EleutherAI/pythia-410m",
+      "experiment": "prompt-preference dataset",
+      "shows": "histogram of per-prompt behavior_margin",
+      "read": "mass right of 0 = model leans sycophantic; heavy left = resists. Annotated % prefer syc",
+      "source": "data/processed/EleutherAI_pythia-410m_prompt_preferences.csv"
+    },
+    {
+      "file": "plots/EleutherAI_pythia-410m/EleutherAI_pythia-410m_probe_gradient_layer_attribution.png",
+      "model": "EleutherAI/pythia-410m",
+      "experiment": "probe-gradient attribution",
+      "shows": "attribution score per layer, top-k highlighted",
+      "read": "taller bar = layer contributes more to the probe's predicted preference",
+      "source": "artifacts/attribution/EleutherAI_pythia-410m_prompt_preferences_prompt_final_layer_attribution.csv"
+    },
+    {
+      "file": "plots/EleutherAI_pythia-410m/EleutherAI_pythia-410m_causal_probe_delta.png",
+      "model": "EleutherAI/pythia-410m",
+      "experiment": "causal validation (probe prediction)",
+      "shows": "probe_delta by intervention method",
+      "read": "more negative for probe_gradient than random = attributed layers matter to the probe",
+      "source": "results/tables/EleutherAI_pythia-410m_prompt_preferences_prompt_final_causal_validation.csv"
+    },
+    {
+      "file": "plots/EleutherAI_pythia-410m/EleutherAI_pythia-410m_causal_behavior_margin_delta.png",
+      "model": "EleutherAI/pythia-410m",
+      "experiment": "causal validation (real behavior)",
+      "shows": "behavior_margin_delta by intervention method",
+      "read": "probe_gradient separating from random = attributed layers causally shift behavior",
+      "source": "results/tables/EleutherAI_pythia-410m_prompt_preferences_prompt_final_causal_validation.csv"
+    },
+    {
+      "file": "plots/EleutherAI_pythia-410m/EleutherAI_pythia-410m_topk_sweep_behavior_margin.png",
+      "model": "EleutherAI/pythia-410m",
+      "experiment": "top-k sweep",
+      "shows": "effect size vs number of layers intervened",
+      "read": "probe-gradient curve below random = targeted layers do more per-k",
+      "source": "results/tables/EleutherAI_pythia-410m_prompt_preferences_prompt_final_causal_sweep.csv"
+    },
+    {
+      "file": "plots/EleutherAI_pythia-410m/EleutherAI_pythia-410m_probe_vs_controls_by_layer.png",
+      "model": "EleutherAI/pythia-410m",
+      "experiment": "confound controls",
+      "shows": "sycophancy probe decodability vs random-label / static-feature / topic controls",
+      "read": "random-label ~0 = signal is real; a surface feature matching the probe = confound risk",
+      "source": "results/tables/EleutherAI_pythia-410m_control_probe_metrics.csv"
+    },
+    {
+      "file": "plots/EleutherAI_pythia-410m/EleutherAI_pythia-410m_direction_comparison_behavior_delta.png",
+      "model": "EleutherAI/pythia-410m",
+      "experiment": "direction steering",
+      "shows": "behavior_margin change vs steering strength, per direction method",
+      "read": "steeper line = that direction controls behavior more; compare diff_of_means to regression",
+      "source": "results/tables/EleutherAI_pythia-410m_direction_comparison.csv"
+    },
+    {
+      "file": "plots/EleutherAI_pythia-410m/EleutherAI_pythia-410m_direction_comparison_answer_flip.png",
+      "model": "EleutherAI/pythia-410m",
+      "experiment": "direction steering",
+      "shows": "answer-flip rate vs steering strength, per direction",
+      "read": "higher flip rate at moderate \u03b1 = more effective, interpretable control",
+      "source": "results/tables/EleutherAI_pythia-410m_direction_comparison.csv"
+    },
+    {
+      "file": "plots/EleutherAI_pythia-410m/EleutherAI_pythia-410m_decodability_vs_causal_effect.png",
+      "model": "EleutherAI/pythia-410m",
+      "experiment": "decodability vs causation",
+      "shows": "per-layer decodability and causal effect on two axes",
+      "read": "curves tracking = decoding predicts causation; diverging = they're different layers",
+      "source": "results/tables/EleutherAI_pythia-410m_layerwise_decodability_causal_sweep.csv"
+    },
+    {
+      "file": "plots/EleutherAI_pythia-410m/EleutherAI_pythia-410m_layerwise_behavior_delta.png",
+      "model": "EleutherAI/pythia-410m",
+      "experiment": "layerwise causal effect",
+      "shows": "behavior_margin change when each layer is patched, with 95% CI",
+      "read": "bars/points with CI clear of 0 = a genuinely causal layer",
+      "source": "results/tables/EleutherAI_pythia-410m_layerwise_decodability_causal_sweep.csv"
+    },
+    {
+      "file": "plots/EleutherAI_pythia-410m/EleutherAI_pythia-410m_layerwise_answer_flip_rate.png",
+      "model": "EleutherAI/pythia-410m",
+      "experiment": "layerwise answer-flip",
+      "shows": "share of prompts that changed preferred answer when each layer is patched",
+      "read": "taller bar = patching that layer more often flips the model's A/B choice",
+      "source": "results/tables/EleutherAI_pythia-410m_layerwise_decodability_causal_sweep.csv"
+    }
+  ],
+  "__comparison__": [
+    {
+      "file": "plots/comparison/model_probe_regression_comparison.png",
+      "model": "comparison",
+      "experiment": "cross-model probe regression",
+      "shows": "test Pearson vs normalized depth for each model",
+      "read": "curves rising toward deep layers across models = a shared mechanism",
+      "source": "results/tables/gpt2-small_prompt_preferences_prompt_final_layer_probe_metrics.csv; results/tables/EleutherAI_pythia-410m_prompt_preferences_prompt_final_layer_probe_metrics.csv"
+    },
+    {
+      "file": "plots/comparison/model_causal_behavior_comparison.png",
+      "model": "comparison",
+      "experiment": "cross-model causal effect",
+      "shows": "behavior_margin_delta grouped by model \u00d7 method",
+      "read": "probe_gradient bar more negative than random within a model = real causal control",
+      "source": "results/tables/gpt2-small_prompt_preferences_prompt_final_causal_validation.csv; results/tables/EleutherAI_pythia-410m_prompt_preferences_prompt_final_causal_validation.csv"
+    }
+  ],
+  "Qwen_Qwen2.5-0.5B-Instruct": [
+    {
+      "file": "plots/Qwen_Qwen2.5-0.5B-Instruct/Qwen_Qwen2.5-0.5B-Instruct_probe_regression_by_layer.png",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "experiment": "prompt-preference regression",
+      "shows": "per-layer test/val Pearson of probe predicting behavior_margin",
+      "read": "higher = preference more linearly decodable at that layer; rising trend = upper layers commit",
+      "source": "results/tables/Qwen_Qwen2.5-0.5B-Instruct_prompt_preferences_prompt_final_layer_probe_metrics.csv"
+    },
+    {
+      "file": "plots/Qwen_Qwen2.5-0.5B-Instruct/Qwen_Qwen2.5-0.5B-Instruct_behavior_margin_distribution.png",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "experiment": "prompt-preference dataset",
+      "shows": "histogram of per-prompt behavior_margin",
+      "read": "mass right of 0 = model leans sycophantic; heavy left = resists. Annotated % prefer syc",
+      "source": "data/processed/Qwen_Qwen2.5-0.5B-Instruct_prompt_preferences.csv"
+    },
+    {
+      "file": "plots/Qwen_Qwen2.5-0.5B-Instruct/Qwen_Qwen2.5-0.5B-Instruct_probe_gradient_layer_attribution.png",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "experiment": "probe-gradient attribution",
+      "shows": "attribution score per layer, top-k highlighted",
+      "read": "taller bar = layer contributes more to the probe's predicted preference",
+      "source": "artifacts/attribution/Qwen_Qwen2.5-0.5B-Instruct_prompt_preferences_prompt_final_layer_attribution.csv"
+    },
+    {
+      "file": "plots/Qwen_Qwen2.5-0.5B-Instruct/Qwen_Qwen2.5-0.5B-Instruct_causal_probe_delta.png",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "experiment": "causal validation (probe prediction)",
+      "shows": "probe_delta by intervention method",
+      "read": "more negative for probe_gradient than random = attributed layers matter to the probe",
+      "source": "results/tables/Qwen_Qwen2.5-0.5B-Instruct_prompt_preferences_prompt_final_causal_validation.csv"
+    },
+    {
+      "file": "plots/Qwen_Qwen2.5-0.5B-Instruct/Qwen_Qwen2.5-0.5B-Instruct_causal_behavior_margin_delta.png",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "experiment": "causal validation (real behavior)",
+      "shows": "behavior_margin_delta by intervention method",
+      "read": "probe_gradient separating from random = attributed layers causally shift behavior",
+      "source": "results/tables/Qwen_Qwen2.5-0.5B-Instruct_prompt_preferences_prompt_final_causal_validation.csv"
+    },
+    {
+      "file": "plots/Qwen_Qwen2.5-0.5B-Instruct/Qwen_Qwen2.5-0.5B-Instruct_topk_sweep_behavior_margin.png",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "experiment": "top-k sweep",
+      "shows": "effect size vs number of layers intervened",
+      "read": "probe-gradient curve below random = targeted layers do more per-k",
+      "source": "results/tables/Qwen_Qwen2.5-0.5B-Instruct_prompt_preferences_prompt_final_causal_sweep.csv"
+    },
+    {
+      "file": "plots/Qwen_Qwen2.5-0.5B-Instruct/Qwen_Qwen2.5-0.5B-Instruct_probe_vs_controls_by_layer.png",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "experiment": "confound controls",
+      "shows": "sycophancy probe decodability vs random-label / static-feature / topic controls",
+      "read": "random-label ~0 = signal is real; a surface feature matching the probe = confound risk",
+      "source": "results/tables/Qwen_Qwen2.5-0.5B-Instruct_control_probe_metrics.csv"
+    }
+  ]
+}

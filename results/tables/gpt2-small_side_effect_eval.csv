@@ -1,0 +1,2 @@
+side_effect_score,weirdness_rate,output_length_ratio,repetition_increase,qa_accuracy_drop,n,model_name,intervention,setting
+0.6605008669735837,1.0,1.461160269964029,0.5482639299218752,0.125,20,gpt2-small,probe_steering,alpha=+1

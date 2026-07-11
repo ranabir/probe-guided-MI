@@ -1,0 +1,12 @@
+{
+  "metric_col": "val_pearson",
+  "best_any_layer": 6,
+  "best_any_metric": 0.6403308510780334,
+  "selected_policy": "best_late",
+  "selected_layer": 7,
+  "selected_metric": 0.5517416596412659,
+  "min_probe_layer_frac": 0.65,
+  "reason": "best val_pearson among layers >= 7 (best_late)",
+  "probe_type": "regression",
+  "probe_target": "behavior_margin"
+}

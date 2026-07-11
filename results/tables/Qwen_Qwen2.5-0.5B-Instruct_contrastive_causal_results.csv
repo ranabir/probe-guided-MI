@@ -1,0 +1,2 @@
+model_name,status,note
+Qwen/Qwen2.5-0.5B-Instruct,causal_intervention_pending_hf,TL-only residual hooks; HF steering/patching not implemented

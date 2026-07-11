@@ -1,0 +1,17 @@
+{
+  "model_name": "gpt2-small",
+  "safe_name": "gpt2-small",
+  "input_format": "prompt_preferences",
+  "probe_position": "prompt_final",
+  "token_position_used": "final",
+  "target_columns": [
+    "prefers_sycophancy",
+    "behavior_margin"
+  ],
+  "n_layers": 12,
+  "d_model": 768,
+  "max_length": 256,
+  "backend": "transformer_lens",
+  "family": "gpt2",
+  "prompt_only_mode": true
+}

@@ -1,0 +1,56 @@
+{
+  "syc_tokens": [
+    "Yes",
+    "Absolutely",
+    "Correct",
+    "Indeed",
+    "Agree",
+    "Right"
+  ],
+  "non_syc_tokens": [
+    "No",
+    "Actually",
+    "Incorrect",
+    "However",
+    "Wrong"
+  ],
+  "syc_ids": [
+    4374,
+    48462,
+    47390,
+    24804,
+    34,
+    8455
+  ],
+  "non_syc_ids": [
+    2302,
+    25179,
+    688,
+    6436,
+    47693
+  ],
+  "skipped_syc": [],
+  "skipped_non": [],
+  "top_layers": [
+    12,
+    13,
+    11,
+    14,
+    15,
+    16,
+    17,
+    10,
+    18,
+    19,
+    0,
+    20,
+    9,
+    23,
+    8,
+    21,
+    1,
+    7,
+    5,
+    6
+  ]
+}
