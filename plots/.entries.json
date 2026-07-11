@@ -159,6 +159,22 @@
       "shows": "each family's best flip and the side-effect it incurs",
       "read": "tall blue + short orange = clean control; tall both = disruptive control",
       "source": "results/tables/gpt2-small_clean_causal_control.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_subspace_ablation_pareto.png",
+      "model": "gpt2-small",
+      "experiment": "subspace ablation",
+      "shows": "flip vs side-effect across subspace rank and layer band",
+      "read": "does a higher-rank subspace reach the clean zone with a high flip?",
+      "source": "results/tables/gpt2-small_subspace_ablation.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_subspace_ablation_by_rank.png",
+      "model": "gpt2-small",
+      "experiment": "subspace ablation",
+      "shows": "how flip and side-effect change with subspace rank, per layer band",
+      "read": "flip rising with rank while side-effect stays low = sycophancy is a subspace we can cleanly remove",
+      "source": "results/tables/gpt2-small_subspace_ablation.csv"
     }
   ],
   "EleutherAI_pythia-410m": [
@@ -349,6 +365,22 @@
       "shows": "each family's best flip and the side-effect it incurs",
       "read": "tall blue + short orange = clean control; tall both = disruptive control",
       "source": "results/tables/Qwen_Qwen2.5-0.5B-Instruct_clean_causal_control.csv"
+    },
+    {
+      "file": "plots/Qwen_Qwen2.5-0.5B-Instruct/Qwen_Qwen2.5-0.5B-Instruct_subspace_ablation_pareto.png",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "experiment": "subspace ablation",
+      "shows": "flip vs side-effect across subspace rank and layer band",
+      "read": "does a higher-rank subspace reach the clean zone with a high flip?",
+      "source": "results/tables/Qwen_Qwen2.5-0.5B-Instruct_subspace_ablation.csv"
+    },
+    {
+      "file": "plots/Qwen_Qwen2.5-0.5B-Instruct/Qwen_Qwen2.5-0.5B-Instruct_subspace_ablation_by_rank.png",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "experiment": "subspace ablation",
+      "shows": "how flip and side-effect change with subspace rank, per layer band",
+      "read": "flip rising with rank while side-effect stays low = sycophancy is a subspace we can cleanly remove",
+      "source": "results/tables/Qwen_Qwen2.5-0.5B-Instruct_subspace_ablation.csv"
     }
   ]
 }

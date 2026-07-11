@@ -78,6 +78,31 @@ def make_mean_shift(unit_dirs: Dict[int, np.ndarray], honest_proj: Dict[int, flo
     return edit
 
 
+def make_subspace_ablation(subspaces: Dict[int, np.ndarray],
+                           honest_target: Optional[Dict[int, np.ndarray]] = None,
+                           norm_preserve: bool = True) -> Callable:
+    """Project the residual out of a rank-k sycophancy subspace at each layer.
+
+    subspaces[layer] is an orthonormal basis V [k, D].
+      h_new = h - (h Vᵀ) V                         (remove the whole subspace)
+    If honest_target is given, move the subspace coordinates to the honest-mean instead of zero:
+      h_new = h - ((h Vᵀ) - target) V
+    Touches only the k sycophancy dims; the other D-k dims (general computation) are untouched.
+    """
+    torch = _torch()
+    Vt = {L: torch.tensor(V, dtype=torch.float32) for L, V in subspaces.items()}          # [k, D]
+    tgt = None if honest_target is None else {L: torch.tensor(t, dtype=torch.float32) for L, t in honest_target.items()}
+
+    def edit(vec, layer):
+        V = Vt[layer].to(vec.device).to(vec.dtype)       # [k, D]
+        coords = vec @ V.T                               # [B, k]
+        if tgt is not None:
+            coords = coords - tgt[layer].to(vec.device).to(vec.dtype)  # (coords - target)
+        out = vec - coords @ V                           # remove subspace component
+        return _renorm(vec, out) if norm_preserve else out
+    return edit
+
+
 def make_cap(unit_dirs: Dict[int, np.ndarray], threshold: Dict[int, float],
              strength: float = 1.0, norm_preserve: bool = False) -> Callable:
     """Clip the component along d̂ only when it exceeds `threshold`."""

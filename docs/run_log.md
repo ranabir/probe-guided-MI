@@ -279,3 +279,20 @@ Outputs: results/tables/{sn}_clean_causal_control.csv; plots/{sn}/{sn}_clean_con
 Tests: +9 (test_residual_interventions.py). pytest → 140 passed.
 
 Interpretation: instruct models now steerable; norm-inflation diagnosis confirmed (clean methods 13-30x lower side-effect); strong-AND-clean control still unreached (top-left of Pareto empty).
+
+---
+
+# Sycophancy-Subspace Ablation — Run Log (2026-07-11)
+
+## New: src/sycophancy_subspace.py + make_subspace_ablation
+Rank-k subspace via SVD of bootstrap difference-of-means; ablate h -= (hVᵀ)V (TL + HF).
+
+## Step 16 — subspace_ablation
+GPT-2: `python scripts/16_subspace_ablation.py --model_name gpt2-small --ranks 1 2 3 5 8 --layer_bands peak top3 midband`
+  → midband behavior_margin_delta rises monotonically with rank (0.002→0.072); rank-8 first clean-zone flip 0.08 @ side-effect 0.20.
+Qwen: `python scripts/16_subspace_ablation.py --model_name Qwen/Qwen2.5-0.5B-Instruct --ranks 1 2 3 5 8 --layer_bands peak top3 midband`
+  → CLEAN AND STRONG: top-3 band rank-8 flip 0.43 @ side-effect 0.065 (vs additive 0.57 @ 0.42-0.71, single-direction 0.07). Flip rises monotonically with rank.
+
+Finding: sycophancy is a low-rank subspace, not one direction. Rank-8 subspace ablation gives
+capability-preserving causal control on the instruct model — the missing top-left Pareto point.
+Tests: +7 (test_sycophancy_subspace.py). pytest → 147 passed.

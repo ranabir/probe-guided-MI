@@ -131,6 +131,12 @@ def generate_for_model(model_name: str) -> list:
         cdf = pd.read_csv(clean_csv)
         if "family" in cdf.columns and len(cdf):
             entries.extend(plotting.plot_clean_control(cdf, model_name))
+    # Subspace ablation (script 16).
+    sub_csv = root / "results" / "tables" / f"{sn}_subspace_ablation.csv"
+    if sub_csv.exists():
+        sdf = pd.read_csv(sub_csv)
+        if "rank" in sdf.columns and len(sdf):
+            entries.extend(plotting.plot_subspace_ablation(sdf, model_name))
     return entries
 
 

@@ -436,6 +436,60 @@ def plot_clean_control(df, model_name: str) -> list:
     return entries
 
 
+def plot_subspace_ablation(df, model_name: str) -> list:
+    """(1) flip vs side-effect scatter sized by rank; (2) flip & side-effect vs rank per band."""
+    sn = safe_model_name(model_name)
+    entries = []
+    bands = list(dict.fromkeys(df["layer_band"]))
+    band_color = {b: c for b, c in zip(bands, ["#d95f0e", "#2c7fb8", "#31a354", "#9E7BB5", "#969696"])}
+
+    # 1. Pareto scatter (marker size ∝ rank)
+    fig, ax = plt.subplots(figsize=(8.6, 6))
+    for b, g in df.groupby("layer_band"):
+        ax.scatter(g["side_effect_score"], g["targeted_flip_rate"],
+                   s=30 + 22 * g["rank"], alpha=0.8, color=band_color.get(b, "#888"),
+                   edgecolor="white", label=f"band={b}", zorder=3)
+    for _, r in df.iterrows():
+        ax.annotate(f"k{int(r['rank'])}", (r["side_effect_score"], r["targeted_flip_rate"]),
+                    fontsize=7, ha="center", va="center", color="#333")
+    ax.axvspan(-0.01, 0.25, color="#e8f0e6", alpha=0.6, zorder=0)
+    ax.text(0.12, ax.get_ylim()[1] * 0.02, "clean zone", fontsize=9, color="#4d6b48")
+    ax.set_xlabel("side-effect score  (lower = model stays intact)")
+    ax.set_ylabel("targeted syc→honest flip rate")
+    ax.set_title("Subspace ablation: flip vs. side-effect (marker size ∝ rank)")
+    ax.text(0.5, -0.13, f"{model_name} | a point in the clean zone with high flip = clean AND strong control",
+            transform=ax.transAxes, ha="center", fontsize=9, color="#555")
+    ax.legend(fontsize=9, loc="upper right")
+    p1 = plots_dir(model_name) / f"{sn}_subspace_ablation_pareto.png"
+    _save(fig, p1)
+    entries.append({"file": _rel(p1), "model": model_name, "experiment": "subspace ablation",
+                    "shows": "flip vs side-effect across subspace rank and layer band",
+                    "read": "does a higher-rank subspace reach the clean zone with a high flip?",
+                    "source": _rel(Path(results_dir("tables")) / f"{sn}_subspace_ablation.csv")})
+
+    # 2. flip & side-effect vs rank (one panel per band would be busy; overlay flip solid, se dashed)
+    fig, ax = plt.subplots(figsize=(8.6, 5))
+    for b, g in df.groupby("layer_band"):
+        g = g.sort_values("rank")
+        c = band_color.get(b, "#888")
+        ax.plot(g["rank"], g["targeted_flip_rate"], marker="o", color=c, lw=2, label=f"{b}: flip")
+        ax.plot(g["rank"], g["side_effect_score"], marker="s", color=c, lw=1.4, ls="--", alpha=0.7,
+                label=f"{b}: side-effect")
+    ax.set_xlabel("subspace rank k")
+    ax.set_ylabel("rate / score")
+    ax.set_title("Effect of subspace rank: flip (solid) vs side-effect (dashed)")
+    ax.text(0.5, -0.15, f"{model_name} | ideal: solid line rises, dashed line stays low",
+            transform=ax.transAxes, ha="center", fontsize=9, color="#555")
+    ax.legend(fontsize=8, ncol=2)
+    p2 = plots_dir(model_name) / f"{sn}_subspace_ablation_by_rank.png"
+    _save(fig, p2)
+    entries.append({"file": _rel(p2), "model": model_name, "experiment": "subspace ablation",
+                    "shows": "how flip and side-effect change with subspace rank, per layer band",
+                    "read": "flip rising with rank while side-effect stays low = sycophancy is a subspace we can cleanly remove",
+                    "source": _rel(Path(results_dir("tables")) / f"{sn}_subspace_ablation.csv")})
+    return entries
+
+
 def plot_side_effect_summary(metrics: dict, model_name: str) -> dict:
     """Bar chart of side-effect components for the best intervention."""
     sn = safe_model_name(model_name)
