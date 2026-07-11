@@ -125,6 +125,12 @@ def generate_for_model(model_name: str) -> list:
         if "objective_score" in srch.columns and len(srch):
             entries.append(plotting.plot_intervention_search_pareto(srch, model_name))
             entries.append(plotting.plot_best_interventions_ranked(srch, model_name))
+    # Clean causal control (script 15) — works for TL and HF models.
+    clean_csv = root / "results" / "tables" / f"{sn}_clean_causal_control.csv"
+    if clean_csv.exists():
+        cdf = pd.read_csv(clean_csv)
+        if "family" in cdf.columns and len(cdf):
+            entries.extend(plotting.plot_clean_control(cdf, model_name))
     return entries
 
 

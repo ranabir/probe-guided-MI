@@ -30,6 +30,7 @@ Read in this order for the full research narrative.
 | [`causal_control_iteration_plan.md`](causal_control_iteration_plan.md) | Plan: intervene at high-causal layers; contrastive patching; capping; side-effect eval. |
 | [`causal_control_iteration_results.md`](causal_control_iteration_results.md) | Full results, plots, and honest interpretation. |
 | [`final_status_causal_control_iteration.md`](final_status_causal_control_iteration.md) | What worked, what failed, next experiment. |
+| [`clean_causal_control_results.md`](clean_causal_control_results.md) | **HF-capable interventions (instruct models steerable) + clean-control methods** (projection-ablation, mean-shift, norm-preserving). |
 | [`side_effect_eval_notes.md`](side_effect_eval_notes.md) | Raw before/after generation samples. |
 
 ## Logs

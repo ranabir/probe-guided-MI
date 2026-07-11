@@ -143,6 +143,22 @@
       "shows": "top 10 intervention configs by objective score",
       "read": "longer bar = better control-vs-harm trade-off; orange=causal layers",
       "source": "results/tables/gpt2-small_causal_intervention_search.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_clean_control_pareto.png",
+      "model": "gpt2-small",
+      "experiment": "clean causal control",
+      "shows": "answer-flip vs side-effect for additive vs projection-ablation vs mean-shift",
+      "read": "a point in the shaded clean zone with high flip = capability-preserving control",
+      "source": "results/tables/gpt2-small_clean_causal_control.csv"
+    },
+    {
+      "file": "plots/gpt2-small/gpt2-small_clean_control_flip_vs_sideeffect.png",
+      "model": "gpt2-small",
+      "experiment": "clean causal control",
+      "shows": "each family's best flip and the side-effect it incurs",
+      "read": "tall blue + short orange = clean control; tall both = disruptive control",
+      "source": "results/tables/gpt2-small_clean_causal_control.csv"
     }
   ],
   "EleutherAI_pythia-410m": [
@@ -317,6 +333,22 @@
       "shows": "sycophancy probe decodability vs random-label / static-feature / topic controls",
       "read": "random-label ~0 = signal is real; a surface feature matching the probe = confound risk",
       "source": "results/tables/Qwen_Qwen2.5-0.5B-Instruct_control_probe_metrics.csv"
+    },
+    {
+      "file": "plots/Qwen_Qwen2.5-0.5B-Instruct/Qwen_Qwen2.5-0.5B-Instruct_clean_control_pareto.png",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "experiment": "clean causal control",
+      "shows": "answer-flip vs side-effect for additive vs projection-ablation vs mean-shift",
+      "read": "a point in the shaded clean zone with high flip = capability-preserving control",
+      "source": "results/tables/Qwen_Qwen2.5-0.5B-Instruct_clean_causal_control.csv"
+    },
+    {
+      "file": "plots/Qwen_Qwen2.5-0.5B-Instruct/Qwen_Qwen2.5-0.5B-Instruct_clean_control_flip_vs_sideeffect.png",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "experiment": "clean causal control",
+      "shows": "each family's best flip and the side-effect it incurs",
+      "read": "tall blue + short orange = clean control; tall both = disruptive control",
+      "source": "results/tables/Qwen_Qwen2.5-0.5B-Instruct_clean_causal_control.csv"
     }
   ]
 }

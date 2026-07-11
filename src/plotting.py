@@ -387,6 +387,55 @@ def plot_best_interventions_ranked(ranked, model_name: str, top_n: int = 10) -> 
             "source": _rel(Path(results_dir("tables")) / f"{sn}_causal_intervention_search.csv")}
 
 
+def plot_clean_control(df, model_name: str) -> list:
+    """Clean-control comparison: (1) flip vs side-effect scatter by family; (2) grouped bars."""
+    sn = safe_model_name(model_name)
+    fam_color = {"additive": "#969696", "additive_normpres": "#9E7BB5",
+                 "projection_ablation": "#d95f0e", "mean_shift": "#31a354"}
+    entries = []
+
+    # 1. Pareto scatter: side-effect (x) vs targeted flip (y)
+    fig, ax = plt.subplots(figsize=(8.6, 6))
+    for fam, g in df.groupby("family"):
+        ax.scatter(g["side_effect_score"], g["targeted_flip_rate"], s=80, alpha=0.85,
+                   color=fam_color.get(fam, "#888"), edgecolor="white", label=fam, zorder=3)
+    ax.axvspan(-0.01, 0.25, color="#e8f0e6", alpha=0.6, zorder=0)
+    ax.text(0.12, ax.get_ylim()[1] * 0.02, "clean zone\n(low side-effect)", fontsize=9, color="#4d6b48")
+    ax.set_xlabel("side-effect score  (lower = model stays intact)")
+    ax.set_ylabel("targeted syc→honest flip rate  (higher = more control)")
+    ax.set_title("Clean causal control: flip vs. side-effect")
+    ax.text(0.5, -0.13, f"{model_name} | top-LEFT is the goal: high control inside the clean zone",
+            transform=ax.transAxes, ha="center", fontsize=9, color="#555")
+    ax.legend(fontsize=9, loc="upper right")
+    p1 = plots_dir(model_name) / f"{sn}_clean_control_pareto.png"
+    _save(fig, p1)
+    entries.append({"file": _rel(p1), "model": model_name, "experiment": "clean causal control",
+                    "shows": "answer-flip vs side-effect for additive vs projection-ablation vs mean-shift",
+                    "read": "a point in the shaded clean zone with high flip = capability-preserving control",
+                    "source": _rel(Path(results_dir("tables")) / f"{sn}_clean_causal_control.csv")})
+
+    # 2. Grouped bars: best flip + its side-effect per family
+    best = df.sort_values("targeted_flip_rate", ascending=False).drop_duplicates("family")
+    best = best.set_index("family").reindex([f for f in fam_color if f in best.index]).reset_index()
+    x = np.arange(len(best)); w = 0.38
+    fig, ax = plt.subplots(figsize=(8.6, 5))
+    b1 = ax.bar(x - w/2, best["targeted_flip_rate"], w, label="targeted flip (↑ good)", color="#2c7fb8")
+    b2 = ax.bar(x + w/2, best["side_effect_score"], w, label="side-effect (↓ good)", color="#d95f0e")
+    ax.bar_label(b1, fmt="%.2f", fontsize=9); ax.bar_label(b2, fmt="%.2f", fontsize=9)
+    ax.set_xticks(x); ax.set_xticklabels(best["family"], fontsize=9, rotation=12)
+    ax.set_ylabel("rate / score"); ax.set_title("Best flip vs its side-effect, by intervention family")
+    ax.text(0.5, -0.18, f"{model_name} | the winning family has a tall blue bar and a short orange bar",
+            transform=ax.transAxes, ha="center", fontsize=9, color="#555")
+    ax.legend(fontsize=9)
+    p2 = plots_dir(model_name) / f"{sn}_clean_control_flip_vs_sideeffect.png"
+    _save(fig, p2)
+    entries.append({"file": _rel(p2), "model": model_name, "experiment": "clean causal control",
+                    "shows": "each family's best flip and the side-effect it incurs",
+                    "read": "tall blue + short orange = clean control; tall both = disruptive control",
+                    "source": _rel(Path(results_dir("tables")) / f"{sn}_clean_causal_control.csv")})
+    return entries
+
+
 def plot_side_effect_summary(metrics: dict, model_name: str) -> dict:
     """Bar chart of side-effect components for the best intervention."""
     sn = safe_model_name(model_name)

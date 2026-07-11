@@ -260,3 +260,22 @@ TL-only interventions → graceful pending markers in contrastive_causal_results
 
 ## Interpretation
 Targeting high-causal layers with strong steering DOES flip answers (0.83) where decodable-layer targeting gives ~0 — but with heavy side effects. Reliable, capability-preserving causal control NOT achieved in GPT-2. Useful, honest trade-off result.
+
+---
+
+# Clean Causal Control + HF Interventions — Run Log (2026-07-11)
+
+## New module: src/residual_interventions.py (backend-agnostic TL + HF)
+Unified residual edit for both TransformerLens and HuggingFace: additive, additive_normpres,
+projection_ablation, mean_shift, cap. Verified steering works on Qwen (instruct) — Problem 1 solved.
+
+## Step 15 — clean_causal_control
+GPT-2 (layers 1-3): `python scripts/15_clean_causal_control.py --model_name gpt2-small --layer_selection causal_topk --top_k_layers 3 --alphas -6 -4 -2 2 4 6 --max_examples 25 --side_effect_prompts 12`
+  → additive flip 0.25 @ side-effect 0.68; projection_ablation/mean_shift flip 0.0 @ side-effect 0.05 (13x cleaner, but no flip).
+Qwen (layers 4-6): `python scripts/15_clean_causal_control.py --model_name Qwen/Qwen2.5-0.5B-Instruct --layer_selection manual --manual_layers 4,5,6 --alphas -6 -4 -2 2 4 6 --max_examples 20 --side_effect_prompts 10`
+  → additive flip 0.57 @ side-effect 0.42-0.71; additive_normpres 0.57 @ 0.44 (Pareto improvement); projection_ablation flip 0.07 @ side-effect 0.016 (first clean-zone control point).
+
+Outputs: results/tables/{sn}_clean_causal_control.csv; plots/{sn}/{sn}_clean_control_{pareto,flip_vs_sideeffect}.png
+Tests: +9 (test_residual_interventions.py). pytest → 140 passed.
+
+Interpretation: instruct models now steerable; norm-inflation diagnosis confirmed (clean methods 13-30x lower side-effect); strong-AND-clean control still unreached (top-left of Pareto empty).
