@@ -490,6 +490,57 @@ def plot_subspace_ablation(df, model_name: str) -> list:
     return entries
 
 
+def plot_subspace_interpretation(cap_df, cos_df, singular_values, model_name: str, layer: int) -> list:
+    """(1) captured-energy of each sub-type direction vs rank; (2) singular-value spectrum."""
+    sn = safe_model_name(model_name)
+    entries = []
+    sub_colors = ["#d95f0e", "#2c7fb8", "#31a354", "#9E7BB5", "#e6ab02"]
+
+    # 1. captured energy vs rank, one line per sub-type
+    fig, ax = plt.subplots(figsize=(8.6, 5.2))
+    for i, (name, g) in enumerate(cap_df.groupby("subtype")):
+        g = g.sort_values("rank")
+        short = name.replace("sycophancy_on_", "")
+        ax.plot(g["rank"], g["captured_energy"], marker="o", lw=2.2,
+                color=sub_colors[i % len(sub_colors)], label=short)
+    ax.axhline(1.0, color="#888", ls=":", lw=1)
+    ax.set_xlabel("subspace rank k")
+    ax.set_ylabel("captured energy of sub-type direction")
+    ax.set_ylim(0, 1.05)
+    ax.set_title(f"Does the subspace absorb each sycophancy sub-type?  (layer {layer})")
+    ax.text(0.5, -0.15, f"{model_name} | each line rising to ~1 as k grows = that sub-type gets its own dimension",
+            transform=ax.transAxes, ha="center", fontsize=9, color="#555")
+    ax.legend(fontsize=9, title="sub-type")
+    p1 = plots_dir(model_name) / f"{sn}_subspace_subtype_capture.png"
+    _save(fig, p1)
+    entries.append({"file": _rel(p1), "model": model_name, "experiment": "subspace interpretation",
+                    "shows": "fraction of each sub-type's own direction captured by the rank-k subspace",
+                    "read": "sub-types captured only as rank grows = sycophancy is a union of per-topic directions",
+                    "source": _rel(Path(results_dir("tables")) / f"{sn}_subspace_interpretation.csv")})
+
+    # 2. singular-value spectrum
+    fig, ax = plt.subplots(figsize=(8.6, 4.6))
+    sv = list(singular_values)
+    bars = ax.bar([str(i + 1) for i in range(len(sv))], sv, color="#2c7fb8")
+    ax.bar_label(bars, fmt="%.2f", fontsize=9)
+    cum = np.cumsum(sv)
+    ax.plot(range(len(sv)), cum, marker="o", color="#d95f0e", lw=1.8, label="cumulative")
+    ax.axhline(0.9, color="#888", ls=":", lw=1)
+    ax.set_xlabel("subspace dimension")
+    ax.set_ylabel("relative energy")
+    ax.set_title(f"Sycophancy subspace spectrum (layer {layer})")
+    ax.text(0.5, -0.17, f"{model_name} | energy spread across several dims = genuinely multi-directional",
+            transform=ax.transAxes, ha="center", fontsize=9, color="#555")
+    ax.legend(fontsize=9)
+    p2 = plots_dir(model_name) / f"{sn}_subspace_singular_spectrum.png"
+    _save(fig, p2)
+    entries.append({"file": _rel(p2), "model": model_name, "experiment": "subspace interpretation",
+                    "shows": "relative energy per subspace dimension (SVD spectrum) + cumulative",
+                    "read": "a slow-decaying spectrum = multi-dimensional sycophancy; a spike at dim1 = single direction",
+                    "source": _rel(Path(results_dir("tables")) / f"{sn}_subspace_interpretation.csv")})
+    return entries
+
+
 def plot_side_effect_summary(metrics: dict, model_name: str) -> dict:
     """Bar chart of side-effect components for the best intervention."""
     sn = safe_model_name(model_name)

@@ -13,6 +13,7 @@ import logging
 from typing import Dict, List
 
 import numpy as np
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
@@ -77,3 +78,86 @@ def subspace_honest_target(train_hs: np.ndarray, margins: np.ndarray,
         X = train_hs[honest, L, :] if honest.any() else train_hs[:, L, :]
         out[L] = (X @ V.T).mean(0)  # [rank]
     return out
+
+
+# ---------------------------------------------------------------------------
+# Interpretation: does the subspace correspond to the sycophancy sub-types?
+# ---------------------------------------------------------------------------
+
+def subtype_directions(layer_X: np.ndarray, margins: np.ndarray, subsets: np.ndarray
+                       ) -> Dict[str, np.ndarray]:
+    """One unit difference-of-means direction per sub-type (e.g. philosophy / NLP / political).
+
+    For each subset value, direction = mean(activation | margin>0) − mean(activation | margin<=0),
+    computed within that subset only. Returns {subset_name: unit_vector[D]}.
+    """
+    margins = np.asarray(margins)
+    out = {}
+    for s in pd.unique(subsets):
+        sel = subsets == s
+        m = margins[sel]
+        pos, neg = layer_X[sel][m > 0], layer_X[sel][m <= 0]
+        if len(pos) == 0 or len(neg) == 0:
+            continue
+        v = pos.mean(0) - neg.mean(0)
+        n = np.linalg.norm(v)
+        if n > 0:
+            out[str(s)] = (v / n).astype(np.float32)
+    return out
+
+
+def captured_energy(direction: np.ndarray, V: np.ndarray) -> float:
+    """Fraction of a unit direction's energy that lies inside the subspace spanned by V[k, D].
+
+    energy = ‖V Vᵀ d‖² / ‖d‖²  ∈ [0, 1].  1 = the direction lives entirely in the subspace.
+    """
+    d = np.asarray(direction, dtype=np.float64)
+    Vk = np.asarray(V, dtype=np.float64)
+    proj = Vk.T @ (Vk @ d)          # projection of d onto the subspace
+    return float((proj @ proj) / (d @ d + 1e-12))
+
+
+def subtype_capture_vs_rank(layer_X: np.ndarray, margins: np.ndarray, subsets: np.ndarray,
+                            ranks, n_splits: int = 40, seed: int = 42):
+    """For each rank, how much of each sub-type's direction is captured by the rank-k subspace.
+
+    Returns (rows, cos_matrix, singular_values):
+      rows: list of {rank, subtype, captured_energy}
+      cos_matrix: DataFrame [subtype x basis_dim] cosine similarity at max rank
+      singular_values: the SVD spectrum of the bootstrap direction matrix (relative)
+    """
+    import pandas as pd
+    sd = subtype_directions(layer_X, margins, subsets)
+    rows = []
+    max_rank = max(ranks)
+    Vmax = build_sycophancy_subspace(layer_X, margins, rank=max_rank, n_splits=n_splits, seed=seed)
+    for r in ranks:
+        V = build_sycophancy_subspace(layer_X, margins, rank=r, n_splits=n_splits, seed=seed)
+        for name, d in sd.items():
+            rows.append({"rank": int(r), "subtype": name, "captured_energy": captured_energy(d, V)})
+    # cosine of each subtype direction with each basis vector of the max-rank subspace
+    cos = {name: [float(abs(np.dot(d, Vmax[i]))) for i in range(Vmax.shape[0])] for name, d in sd.items()}
+    cos_df = pd.DataFrame(cos, index=[f"dim{i+1}" for i in range(Vmax.shape[0])]).T
+    # singular-value spectrum of the bootstrap direction matrix (relative energy per dim)
+    sv = _singular_spectrum(layer_X, margins, n_splits=n_splits, seed=seed, k=max_rank)
+    return rows, cos_df, sv
+
+
+def _singular_spectrum(layer_X, margins, n_splits=40, seed=42, k=8):
+    margins = np.asarray(margins)
+    rng = np.random.default_rng(seed)
+    X = layer_X.astype(np.float64)
+    pos_idx = np.where(margins > 0)[0]
+    neg_idx = np.where(margins <= 0)[0]
+    vecs = [_diff_of_means(X, margins, np.arange(len(X)))]
+    if len(pos_idx) and len(neg_idx):
+        kk = min(len(pos_idx), len(neg_idx))
+        for _ in range(n_splits):
+            p = rng.choice(pos_idx, size=max(2, kk // 2), replace=True)
+            n = rng.choice(neg_idx, size=max(2, kk // 2), replace=True)
+            v = _diff_of_means(X, margins, np.concatenate([p, n]))
+            if np.linalg.norm(v) > 0:
+                vecs.append(v)
+    s = np.linalg.svd(np.vstack(vecs), compute_uv=False)
+    s = s[:k]
+    return (s / s.sum()).tolist()  # relative energy per singular dimension

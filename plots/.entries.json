@@ -381,6 +381,22 @@
       "shows": "how flip and side-effect change with subspace rank, per layer band",
       "read": "flip rising with rank while side-effect stays low = sycophancy is a subspace we can cleanly remove",
       "source": "results/tables/Qwen_Qwen2.5-0.5B-Instruct_subspace_ablation.csv"
+    },
+    {
+      "file": "plots/Qwen_Qwen2.5-0.5B-Instruct/Qwen_Qwen2.5-0.5B-Instruct_subspace_subtype_capture.png",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "experiment": "subspace interpretation",
+      "shows": "fraction of each sub-type's own direction captured by the rank-k subspace",
+      "read": "sub-types captured only as rank grows = sycophancy is a union of per-topic directions",
+      "source": "results/tables/Qwen_Qwen2.5-0.5B-Instruct_subspace_interpretation.csv"
+    },
+    {
+      "file": "plots/Qwen_Qwen2.5-0.5B-Instruct/Qwen_Qwen2.5-0.5B-Instruct_subspace_singular_spectrum.png",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "experiment": "subspace interpretation",
+      "shows": "relative energy per subspace dimension (SVD spectrum) + cumulative",
+      "read": "a slow-decaying spectrum = multi-dimensional sycophancy; a spike at dim1 = single direction",
+      "source": "results/tables/Qwen_Qwen2.5-0.5B-Instruct_subspace_interpretation.csv"
     }
   ]
 }

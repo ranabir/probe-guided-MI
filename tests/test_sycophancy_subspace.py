@@ -90,3 +90,38 @@ def test_honest_target_shape():
     subs = build_subspaces_for_layers(hs, m, [1], rank=3, n_splits=10)
     tgt = subspace_honest_target(hs, m, subs)
     assert tgt[1].shape == (3,)
+
+
+# --- interpretation ---------------------------------------------------------
+
+def test_captured_energy_bounds_and_extremes():
+    from src.sycophancy_subspace import captured_energy
+    V = np.array([[1.0, 0.0, 0.0]], dtype=np.float32)   # subspace = x-axis
+    assert captured_energy(np.array([1.0, 0.0, 0.0]), V) == pytest.approx(1.0)  # in subspace
+    assert captured_energy(np.array([0.0, 1.0, 0.0]), V) == pytest.approx(0.0)  # orthogonal
+    e = captured_energy(np.array([1.0, 1.0, 0.0]), V)
+    assert 0.0 < e < 1.0  # partial
+
+
+def test_subtype_directions_per_group():
+    from src.sycophancy_subspace import subtype_directions
+    rng = np.random.default_rng(0)
+    X = rng.normal(size=(40, 6)).astype(np.float32)
+    margins = rng.normal(size=40)
+    subsets = np.array(["a", "b"] * 20)
+    dirs = subtype_directions(X, margins, subsets)
+    assert set(dirs) <= {"a", "b"}
+    for v in dirs.values():
+        assert np.isclose(np.linalg.norm(v), 1.0, atol=1e-5)
+
+
+def test_subtype_capture_vs_rank_runs():
+    from src.sycophancy_subspace import subtype_capture_vs_rank
+    rng = np.random.default_rng(1)
+    X = rng.normal(size=(80, 8)).astype(np.float32)
+    margins = rng.normal(size=80)
+    subsets = np.array(["p", "q", "r"] * 27)[:80]
+    rows, cos_df, sv = subtype_capture_vs_rank(X, margins, subsets, ranks=[1, 2, 3], n_splits=10)
+    assert len(rows) > 0 and "captured_energy" in rows[0]
+    assert abs(sum(sv) - 1.0) < 1e-6  # relative energy sums to 1
+    assert cos_df.shape[1] == 3  # 3 basis dims at max rank

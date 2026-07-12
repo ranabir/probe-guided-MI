@@ -137,6 +137,17 @@ def generate_for_model(model_name: str) -> list:
         sdf = pd.read_csv(sub_csv)
         if "rank" in sdf.columns and len(sdf):
             entries.extend(plotting.plot_subspace_ablation(sdf, model_name))
+    # Subspace interpretation (script 17).
+    interp_csv = root / "results" / "tables" / f"{sn}_subspace_interpretation.csv"
+    cos_csv = root / "results" / "tables" / f"{sn}_subspace_subtype_cosine.csv"
+    sv_csv = root / "results" / "tables" / f"{sn}_subspace_singular_spectrum.csv"
+    if interp_csv.exists() and sv_csv.exists():
+        cap = pd.read_csv(interp_csv)
+        cos = pd.read_csv(cos_csv, index_col=0) if cos_csv.exists() else pd.DataFrame()
+        sv = pd.read_csv(sv_csv)["relative_energy"].tolist()
+        layer = int(cap["layer"].iloc[0]) if "layer" in cap.columns and len(cap) else 0
+        if "captured_energy" in cap.columns and len(cap):
+            entries.extend(plotting.plot_subspace_interpretation(cap, cos, sv, model_name, layer))
     return entries
 
 

@@ -31,7 +31,8 @@ Read in this order for the full research narrative.
 | [`causal_control_iteration_results.md`](causal_control_iteration_results.md) | Full results, plots, and honest interpretation. |
 | [`final_status_causal_control_iteration.md`](final_status_causal_control_iteration.md) | What worked, what failed, next experiment. |
 | [`clean_causal_control_results.md`](clean_causal_control_results.md) | **HF-capable interventions (instruct models steerable) + clean-control methods** (projection-ablation, mean-shift, norm-preserving). |
-| [`subspace_ablation_results.md`](subspace_ablation_results.md) | **Sycophancy is a subspace, not one direction** — rank-8 subspace ablation gives clean *and* strong control on Qwen (43% flip @ 0.065 side-effect). |
+| [`subspace_interpretation_results.md`](subspace_interpretation_results.md) | **What the subspace *is*** — scaled eval + interpretation: sycophancy is a union of topic directions (political, NLP, philosophy). |
+| [`subspace_ablation_results.md`](subspace_ablation_results.md) | **Sycophancy is a subspace, not one direction** — subspace ablation on Qwen; see the scaled numbers (rank-2: 40% flip @ 0.03 side-effect) in the interpretation doc above. |
 | [`side_effect_eval_notes.md`](side_effect_eval_notes.md) | Raw before/after generation samples. |
 
 ## Logs

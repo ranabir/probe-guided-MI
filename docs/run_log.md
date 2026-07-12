@@ -296,3 +296,21 @@ Qwen: `python scripts/16_subspace_ablation.py --model_name Qwen/Qwen2.5-0.5B-Ins
 Finding: sycophancy is a low-rank subspace, not one direction. Rank-8 subspace ablation gives
 capability-preserving causal control on the instruct model — the missing top-left Pareto point.
 Tests: +7 (test_sycophancy_subspace.py). pytest → 147 passed.
+
+---
+
+# Scaled Eval + Subspace Interpretation — Run Log (2026-07-12)
+
+## Scaled Qwen eval (run/scale_qwen_eval.sh)
+Rebuilt Qwen at 500 prompts (76 test); subspace ablation top-3 band, ranks 1-12, max_examples 60, side_effect 25, bootstrap 1000.
+  rank-1 flip 0.175 @ side-effect 0.004; **rank-2 flip 0.400 @ 0.032** (best clean point); higher ranks plateau/noisy.
+  Honest correction: earlier 0.43 (n=20) settles to 0.40 at rank-2 (n=60). Subspace ~doubles single-direction control (0.175→0.40) while ~15x cleaner than additive.
+
+## Step 17 — interpret_subspace (Qwen, layer 3)
+Captured energy of each sub-type's diff-of-means direction vs rank:
+  rank-1 ≈ POLITICAL (0.35; NLP 0.00, philosophy 0.09); rank-2 adds NLP (0.00→0.55); philosophy stays low (≤0.22).
+  Singular spectrum [0.26,0.17,0.11,...]; 7 dims for 90% energy → genuinely multi-directional.
+Finding: sycophancy is a union of topic-specific directions (~one per topic). Single direction removes only political;
+subspace removes several → why rank-2+ is stronger and still clean. Philosophy under-captured (caps flip ~0.40).
+Outputs: results/tables/{sn}_subspace_{interpretation,subtype_cosine,singular_spectrum}.csv; plots/{sn}/{sn}_subspace_subtype_capture.png, _singular_spectrum.png
+Tests: +6 (interpretation). pytest → 150 passed.
