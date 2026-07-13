@@ -33,5 +33,5 @@ All write a log to `logs/`.
 After a model run, build the illustrated report:
 
 ```
-python scripts/make_story.py        → docs/PROJECT_STORY.html
+python scripts/make_story.py        → docs/index.html
 ```

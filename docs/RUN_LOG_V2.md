@@ -77,7 +77,7 @@ Probe-gradient does **not** beat random on real behavior — decodable ≠ causa
 - `results/tables/stage_comparison_summary.csv` — the 3-model table above.
 - `plots/comparison/` — `stage_sycophancy_rate.png`, `stage_probe_decodability.png`,
   `model_probe_regression_comparison.png`, and others.
-- `docs/PROJECT_STORY.html` — regenerated illustrated report (8 embedded figures).
+- `docs/index.html` — regenerated illustrated report (8 embedded figures).
 - `plots/README.md` — 39 documented plots.
 
 ---

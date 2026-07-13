@@ -2,7 +2,7 @@
 """Generate a self-contained, Anthropic-styled HTML story of the project.
 
 - Re-renders ~9 hero figures from the existing result CSVs in a warm, consistent scientific palette.
-- Inlines every figure as base64 so the output is a single portable file: docs/PROJECT_STORY.html
+- Inlines every figure as base64 so the output is a single portable file: docs/index.html
 
 Run: python scripts/make_story.py
 """
@@ -633,7 +633,7 @@ def html():
 
 def main():
     build_all()
-    out = ROOT / "docs" / "PROJECT_STORY.html"
+    out = ROOT / "docs" / "index.html"
     out.write_text(html(), encoding="utf-8")
     size_kb = out.stat().st_size / 1024
     print(f"Wrote {out}  ({size_kb:.0f} KB, {len(FIGS)} embedded figures)")

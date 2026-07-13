@@ -5,7 +5,7 @@ Read in this order for the full research narrative.
 ## Start here
 | Doc | What it is |
 |-----|-----------|
-| [`PROJECT_STORY.html`](PROJECT_STORY.html) | **Self-contained illustrated research report** (open in a browser). The best single overview. |
+| [`index.html`](index.html) | **Self-contained illustrated research report** (open in a browser). The best single overview. |
 | [`PROJECT_PITCH.md`](PROJECT_PITCH.md) | One-page summary with the key plots and claims. |
 | [`../README.md`](../README.md) | Repository README: setup, dataset strategy, full run sequence. |
 

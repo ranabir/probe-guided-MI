@@ -9,7 +9,7 @@ readable and replicates across models, instruction-tuning makes it worse, the mo
 are not the most *causal* ones, and — the payoff — **sycophancy is a low-rank *subspace* (roughly one
 direction per topic), which lets us remove it cleanly.**
 
-> 📖 A self-contained illustrated report is in [`docs/PROJECT_STORY.html`](docs/PROJECT_STORY.html)
+> 📖 A self-contained illustrated report is in [`docs/index.html`](docs/index.html)
 > (open in a browser). Full method write-ups live in [`docs/`](docs/README.md).
 
 ---
