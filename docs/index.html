@@ -58,13 +58,32 @@
     .index ol{margin:0;padding-left:20px;} .index li{margin:8px 0;font-size:15.5px;}
     .index .tag{display:inline-block;font-size:11px;font-weight:700;color:var(--coral);border:1px solid var(--coral);
                 border-radius:999px;padding:1px 8px;margin-left:6px;}
-    .flow{list-style:none;padding:0;margin:20px 0;counter-reset:f;}
-    .flow li{position:relative;padding:14px 18px 14px 54px;margin:10px 0;background:var(--card);
-             border:1px solid var(--border);border-radius:10px;counter-increment:f;}
-    .flow li::before{content:counter(f);position:absolute;left:16px;top:14px;width:26px;height:26px;background:var(--coral);
-                     color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;
-                     font-family:'Fraunces',serif;font-weight:600;font-size:14px;}
-    .flow .lead{font-weight:650;}
+    /* interactive research-flow accordion */
+    .flowlist{counter-reset:f;margin:14px 0;}
+    .flow-item{position:relative;margin:10px 0;background:var(--card);border:1px solid var(--border);
+               border-radius:10px;counter-increment:f;overflow:hidden;transition:box-shadow .15s;}
+    .flow-item[open]{box-shadow:0 2px 10px rgba(20,20,19,0.06);border-color:#DAD3C4;}
+    .flow-item summary{list-style:none;cursor:pointer;padding:14px 44px 14px 54px;font-size:16px;
+                       position:relative;user-select:none;}
+    .flow-item summary::-webkit-details-marker{display:none;}
+    .flow-item summary::before{content:counter(f);position:absolute;left:16px;top:12px;width:26px;height:26px;
+                     background:var(--coral);color:#fff;border-radius:50%;display:flex;align-items:center;
+                     justify-content:center;font-family:'Fraunces',serif;font-weight:600;font-size:14px;}
+    .flow-item summary::after{content:'+';position:absolute;right:18px;top:12px;font-size:20px;color:var(--muted);
+                     line-height:1;transition:transform .15s;}
+    .flow-item[open] summary::after{content:'−';color:var(--coral);}
+    .flow-item summary:hover{background:#F1ECE1;}
+    .flow-item .lead{font-weight:650;}
+    .flow-item .detail{padding:2px 22px 16px 54px;color:var(--muted);font-size:15px;line-height:1.62;}
+    .flow-item .detail code{background:#EFEADF;padding:1px 5px;border-radius:4px;font-size:12.5px;color:var(--ink);}
+    .flow-item .detail strong{color:var(--ink);}
+    /* setup detail cards */
+    .detailcards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0;}
+    @media(max-width:640px){.detailcards{grid-template-columns:1fr;}}
+    .dcard{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 20px;}
+    .dcard h4{margin:0 0 8px;color:var(--cloth);font-size:16px;}
+    .dcard p{font-size:14.5px;margin:6px 0;} .dcard ul{font-size:14.5px;margin:6px 0;padding-left:18px;}
+    .dcard li{margin:4px 0;} .dcard code{background:#EFEADF;padding:1px 5px;border-radius:4px;font-size:12.5px;}
     .stat-row{display:flex;gap:14px;flex-wrap:wrap;margin:24px 0;}
     .stat{flex:1;min-width:150px;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 20px;}
     .stat .big{font-family:'Fraunces',serif;font-size:30px;font-weight:600;color:var(--coral);}
@@ -102,6 +121,8 @@
   <div class="index">
     <h4>Index</h4>
     <ol>
+      <li><a href="#flow">The research flow</a> — the 7-step story, click any step to expand <span class="tag">below</span></li>
+      <li><a href="#setup">Setup &amp; technical details</a> — data, models, hooks, probe &amp; metrics <span class="tag">below</span></li>
       <li><a href="#" onclick="showTab('t2');return false;">Probe-guided attribution</a> — the intuition, what we measure, the data, and the first three findings <span class="tag">Tab 2</span></li>
       <li><a href="#" onclick="showTab('t3');return false;">Steering &amp; the sycophancy subspace</a> — intervention types with formulas, side-effects, and the multi-dimensional result <span class="tag">Tab 3</span></li>
     </ol>
@@ -111,28 +132,116 @@
   </div>
 
   <h2 id="flow">The research flow — what led to what</h2>
-  <ol class="flow">
-    <li><span class="lead">Measure the model's own preference.</span> Define <em>behavior_margin</em>
-      and train a probe on the prompt-final activation to predict it. <span class="muted">→ is the signal real?</span></li>
-    <li><span class="lead">It's decodable and replicates.</span> The probe strengthens with depth in
-      both GPT-2 and Pythia. <span class="muted">→ could it be a trivial confound?</span></li>
-    <li><span class="lead">Controls say it's real</span> (clears the random-label floor), and
-      <span class="lead">instruct models are more sycophantic</span> (66% vs ~50%). <span class="muted">→ where do we intervene?</span></li>
-    <li><span class="lead">Decoding ≠ causation.</span> The most <em>readable</em> layer is not the most
-      <em>causal</em> one. <span class="muted">→ intervene at causal layers — but does it have side effects?</span></li>
-    <li><span class="lead">Probe-direction steering works but makes the model weird.</span> Capping is
-      clean but does nothing. <span class="muted">→ maybe sycophancy isn't a single direction.</span></li>
-    <li><span class="lead">Sycophancy is a subspace.</span> Removing a rank-2 subspace flips 40% of
-      answers at ~0.03 side-effect — clean and moderately strong. <span class="muted">→ what are the extra directions?</span></li>
-    <li><span class="lead">One direction per topic.</span> The subspace is a union of topic-specific
-      sycophancy directions (political, NLP, philosophy).</li>
-  </ol>
+  <p class="muted" style="font-size:15px;margin-top:0">Click any step to expand the details.</p>
+  <div class="flowlist">
+    <details class="flow-item">
+      <summary><span class="lead">Measure the model's own preference</span> → is the signal real?</summary>
+      <div class="detail">Rather than a hand label, the target is the model's <em>own</em> preference:
+      <code>behavior_margin = mean-token logP(sycophantic | prompt) − logP(honest | prompt)</code>. We read
+      the activation at the <strong>final prompt token</strong> — before any answer is generated — so the
+      probe must detect an <em>upcoming</em> disposition, not the style of a visible answer. This choice
+      also fixed an earlier invalidity: with the response visible, two rows of the same prompt had
+      identical activations but opposite labels. Regression on the margin makes the target well-posed.</div>
+    </details>
+    <details class="flow-item">
+      <summary><span class="lead">It's decodable — and it replicates</span> → could it be a trivial confound?</summary>
+      <div class="detail">A per-layer linear probe predicts the margin, and its accuracy <strong>rises with
+      depth</strong>: GPT-2 peaks at r≈0.52 (layer 8), Pythia at r≈0.61 (layer 16). The <em>same rising
+      shape in two unrelated architectures</em> is the key — a shared, non-accidental mechanism. But
+      "decodable" alone could still be a surface artifact, which motivated controls.</div>
+    </details>
+    <details class="flow-item">
+      <summary><span class="lead">Controls say it's real; instruct models are worse</span> → where do we intervene?</summary>
+      <div class="detail">Re-running the identical probe on a <strong>random-label</strong> target (shuffled
+      = noise) gives a floor of ≈0.25; the real probe (≈0.52) clears it — genuine signal. Caveat: a pure
+      surface feature (&ldquo;do you agree?&rdquo;) is also highly decodable, so a confound contribution
+      isn't fully excluded. Separately, <strong>Qwen-Instruct is sycophantic 66% of the time vs ~50% for
+      base models</strong> — post-training amplifies it.</div>
+    </details>
+    <details class="flow-item">
+      <summary><span class="lead">Decoding ≠ causation</span> → intervene at causal layers, but with side effects?</summary>
+      <div class="detail">Sweeping every layer independently, the <em>most readable</em> layer (≈L8) is
+      <strong>not</strong> the <em>most causal</em> one (≈L1): reading and steering live in different
+      places. So "intervene where the probe reads best" is the wrong instinct — attribute where it's
+      causal. This immediately raised the reviewer's question: once we invoke a causal effect, does it
+      damage the model?</div>
+    </details>
+    <details class="flow-item">
+      <summary><span class="lead">Probe-direction steering works, but makes the model weird</span> → maybe it's not one direction</summary>
+      <div class="detail">Additive steering <code>h ← h + α·d̂</code> flips up to ~57% of answers on Qwen —
+      but it inflates the residual norm and the model becomes repetitive/incoherent (side-effect
+      0.42–0.71). <strong>Activation capping</strong> is the opposite: clean (~0.04) but almost no flips.
+      This fork — effective-but-disruptive vs clean-but-useless — pointed at the deeper hypothesis: perhaps
+      sycophancy isn't a single direction.</div>
+    </details>
+    <details class="flow-item">
+      <summary><span class="lead">Sycophancy is a subspace</span> → what are the extra directions?</summary>
+      <div class="detail">Remove a low-rank subspace instead of one direction: <code>h ← h − (h Vᵀ)V</code>,
+      with V the top-k singular vectors of many bootstrap difference-of-means directions. On Qwen a single
+      direction flips only 17.5%, but a <strong>rank-2 subspace flips 40% at side-effect 0.03</strong> —
+      ~2× the control, ~15× cleaner than blunt steering, and touching only 2 of ~900 dimensions. The
+      near-&ldquo;golden&rdquo; case: reduce sycophancy without breaking the model.</div>
+    </details>
+    <details class="flow-item">
+      <summary><span class="lead">One direction per topic</span> — the mechanistic explanation</summary>
+      <div class="detail">Measuring how much of each sub-type's own direction lives in the subspace: the
+      <strong>dominant direction is <em>political</em></strong> (captured at rank 1), the <strong>second
+      is <em>NLP</em></strong> (0→0.55 at rank 2, which is why rank-2 doubles the flip), and
+      <strong>philosophy stays diffuse</strong> (≤0.22, honestly capping the flip near 40%). Sycophancy is
+      a <em>union of topic-specific directions</em> — one direction removes one topic; a subspace removes
+      several at once.</div>
+    </details>
+  </div>
 
   <div class="stat-row">
     <div class="stat"><div class="big">0.52 / 0.61</div><div class="lab">peak probe decodability (GPT-2 / Pythia) — replicated</div></div>
     <div class="stat"><div class="big">66% vs 50%</div><div class="lab">sycophancy: instruct vs base</div></div>
     <div class="stat"><div class="big">40% @ 0.03</div><div class="lab">rank-2 subspace flip / side-effect (Qwen)</div></div>
     <div class="stat"><div class="big">1 dir / topic</div><div class="lab">the subspace is a union of topic directions</div></div>
+  </div>
+
+  <h2 id="setup">Setup &amp; technical details</h2>
+  <div class="detailcards">
+    <div class="dcard">
+      <h4>📊 Data</h4>
+      <p>Anthropic <code>model-written-evals</code> sycophancy set, three sub-types pooled evenly:
+      <code>philpapers2020</code> (philosophy), <code>nlp_survey</code> (NLP researchers),
+      <code>political_typology_quiz</code> (politics), ~10k pairs each. We sample 300–500 prompts; each is
+      a persona + stated view + a two-choice question with a sycophantic vs. honest answer.</p>
+      <p><strong>Side-effect set:</strong> 30 authored general-knowledge prompts (&ldquo;Why is the sky
+      blue?&rdquo;, &ldquo;What is 2+2?&rdquo;) in <code>data/side_effect_eval/basic_prompts.jsonl</code>.</p>
+    </div>
+    <div class="dcard">
+      <h4>🧠 Models</h4>
+      <ul>
+        <li><strong>GPT-2 small</strong> — 12 layers, TransformerLens (base)</li>
+        <li><strong>Pythia-410M</strong> — 24 layers, TransformerLens (base)</li>
+        <li><strong>Qwen2.5-0.5B-Instruct</strong> — 24 layers, HuggingFace (instruct)</li>
+        <li>Gemma-2 &amp; OLMo staged checkpoints — registry placeholders</li>
+      </ul>
+      <p>Per-model backend/dtype/stage live in <code>model_registry.yaml</code>.</p>
+    </div>
+    <div class="dcard">
+      <h4>🪝 Hooks — read &amp; write</h4>
+      <p>We attach hooks to each layer to both <em>read</em> activations (caching) and <em>edit</em> them
+      (interventions):</p>
+      <ul>
+        <li><strong>TransformerLens</strong> (GPT-2, Pythia): named hook points, e.g.
+        <code>blocks.L.hook_resid_post</code>.</li>
+        <li><strong>HuggingFace</strong> (Qwen, Gemma): PyTorch <code>register_forward_hook</code> on the
+        decoder-layer modules — a read/write wiretap on the residual stream. This is what makes instruct
+        models steerable.</li>
+      </ul>
+      <p>Edits are applied at the final prompt-token position, then we re-measure behavior.</p>
+    </div>
+    <div class="dcard">
+      <h4>🔬 Probe &amp; metrics</h4>
+      <p><strong>Probe:</strong> ridge regression per layer on the prompt-final residual →
+      <code>behavior_margin</code>; the attribution layer is chosen by a policy (e.g. best late layer).</p>
+      <p><strong>Metrics:</strong> targeted syc→honest <em>flip rate</em> (did the A/B answer change?),
+      <em>side-effect score</em> ∈ [0,1] (weirdness + length deviation + repetition + basic-QA drop), and
+      <em>decodability</em> (probe test Pearson) — all with 95% bootstrap CIs.</p>
+    </div>
   </div>
   </div>
     <div id="t2" class="tab-panel">
